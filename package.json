@@ -1,0 +1,53 @@
+{
+  "name": "service-connector",
+  "version": "0.0.1",
+  "description": "A javascript library on Node.js, to connect other RESTful",
+  "keywords": [
+    "connect",
+    "w3c",
+    "javascript"
+  ],
+  "maintainers": [
+    {
+      "name": "Caesar",
+      "email": "clonncd@gmail.com",
+      "url": "http://github.com/clonn"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Simon Su",
+      "email": "simonsu@gmail.com"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/clonn/"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "http://github.com/tmpvar/jsdom.git"
+    }
+  ],
+  "implements": [
+    "http://www.w3.org/TR/REC-DOM-Level-1"
+  ],
+  "dependencies": {
+    "request": ">0.0.1"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "directories": {
+    "lib": "./lib/jsdom"
+  },
+  "main": "./lib/index.js",
+  "_id": "service-connector@0.0.1",
+  "_engineSupported": true,
+  "_nodeVersion": "v0.6.15",
+  "_defaultsLoaded": true,
+  "_from": "service-connector"
+}
