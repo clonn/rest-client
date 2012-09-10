@@ -20,6 +20,32 @@ var ENV_REQUIRE_KEYS = [
 // env is service connect environment variable.
 var env = {};
 
+
+/**
+ * Test url parttern by REGEXP.
+ *
+ * @method testHttpUrl
+ * @params {String} url
+ * @return {Boolean}
+ */
+var testHttpUrl = function (url) {
+  // parse url string to url object , using url object
+  // convert url string to url Object.
+  if (typeof url === "string") {
+
+    // test http url opening.
+    if ( ! HTTP_REGEXP.test(url)) {
+      throw new Error("[ERROR] URL parttern is not match.");
+      return false;
+    }
+
+    return true;
+  }
+
+  // url type is not a string
+  return false;
+};
+
 /**
  * Setter, set env, a host environment variable.
  *
@@ -34,14 +60,7 @@ exports.setEnv = function (arg) {
 
   // parse url string to url object , using url object
   // convert url string to url Object.
-  if (typeof arg === "string") {
-
-    // test http url opening.
-    if ( ! HTTP_REGEXP.test(arg)) {
-      throw new Error("[ERROR] URL parttern is not match.");
-    }
-
-    // convert url string to url Object
+  if (testHttpUrl(arg)) {
     arg = url.parse(arg);
   }
 
