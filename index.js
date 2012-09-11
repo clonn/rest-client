@@ -8,20 +8,32 @@
  *
  */
 
-var request = require("request");
-var url = require("url");
-var setEnvFlag = false;
-// String test for http url opening.
-var HTTP_REGEXP = /^http:\/\//;
-// default setting Timeout is 30 second.
-var TIMEOUT = 30 * 1000;
-// env require keys.
-var ENV_REQUIRE_KEYS = [
-  "hostname",
-  "protocol"
-];
-// env is service connect environment variable.
-var env = {};
+var request = require("request"),
+    url     = require("url"),
+    emitter = require('events').EventEmitter,
+    // String test for http url opening.
+    HTTP_REGEXP = /^http:\/\//,
+    // set default url for env
+    defaultUrl = {
+      protocol: 'http',
+      host: 'api.micloud.tw:80',
+      hostname: 'api.micloud.tw',
+      port: 80
+    },
+    // env is service connect environment variable.
+    env = {
+      // url object
+      url: defaultUrl,
+      uri: url.format(defaultUrl),
+      // default use GET method
+      method: 'GET',
+      // default set 30 seconds
+      timeout: 30000
+    }
+    // ==================
+    //  private method
+    // ==================
+    testHttpUrl,
 
 
 /**
@@ -31,7 +43,7 @@ var env = {};
  * @params {String} url
  * @return {Boolean}
  */
-var testHttpUrl = function (url) {
+testHttpUrl = function (url) {
   // parse url string to url object , using url object
   // convert url string to url Object.
   if (typeof url === "string") {
@@ -73,32 +85,27 @@ exports.setTimeout = function (time) {
  * @params {Object} url object
  * @return {Object} env object
  */
-exports.setEnv = function (arg) {
+exports.set = function (arg) {
+  var i;
 
-  // get env key as an array.
-  var envKeys = Object.keys(ENV_REQUIRE_KEYS);
-
+  // prevent user get wrong type
   if (typeof arg !== "object") {
-    throw new Error("[ERROR] setEnv, params should an object");
-    return false;
+    return console.warn('[ERROR] set must have an Object parameter');
   }
 
-  // parse url string to url object , using url object
-  // convert url string to url Object.
-  if (testHttpUrl(arg)) {
-    arg = url.parse(arg);
+  // set new attributes to env object
+  for (i in arg) {
+    env[i] = arg[i];
   }
 
-  env = arg;
+  // Always set Timeout more than 0
+  env.timeout = ((env.timeout = parseInt(env.timeout, 10)) > 0) ? env.timeout : 30000;
 
-  // filter url object, it is suit on conviention.
-  ENV_REQUIRE_KEYS.forEach(function (key, id) {
-    if ( ! arg[key] || typeof arg[key] === "undefined") {
-      throw new Error("[ERROR] env attribue " + key + " is not defiend");
-    }
-  });
+  // re-parse url object
+  if (env.url && typeof env.url === "object") {
+    env.uri = url.format(env.url);
+  }
 
-  setEnvFlag = true;
   return env;
 };
 
@@ -109,11 +116,7 @@ exports.setEnv = function (arg) {
  * @params {Object} arg
  * @return {Object} env object
  */
-exports.send = function (arg, callback) {
-  console.log('run send');
-
-  var option = arg;
-
+exports.send = function (reqUrl, callback) {
 
   // set option to env
   option.timeout = TIMEOUT;
@@ -121,7 +124,16 @@ exports.send = function (arg, callback) {
 
   // Send request
   request(arg, function (error, res, body) {
+    if (error) {
+      this.fire('error', function (error) {
+
+      });
+    }
     // TODO: need to warp it to easy use.
-    callback(error, res, body);
+    callback(res, body);
   });
 };
+
+exports.fail = function (callback) {
+
+}
