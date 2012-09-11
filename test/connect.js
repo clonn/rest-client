@@ -1,6 +1,11 @@
 // use rest client js.
 var rc = require('../index');
 
+rc.error(function (error) {
+  console.log(error);
+  //console.log('pilibala');
+});
+
 rc.set({
   url: {
     protocol: 'http',
@@ -11,6 +16,7 @@ rc.set({
   method: 'DELETE',
   timeout:0
 });
+
 /*
 // use GET method
 rc.send('url', function (error, ) {
