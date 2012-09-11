@@ -9,8 +9,12 @@
  */
 
 var request = require("request"),
+    util    = require('util'),
     url     = require("url"),
-    emitter = require('events').EventEmitter,
+    Emitter   = require('events').EventEmitter,
+    emitter = new Emitter(),
+    // a fail event name
+    EVENT_FAIL_NAME = 'onerror',
     // String test for http url opening.
     HTTP_REGEXP = /^http:\/\//,
     // set default url for env
@@ -29,12 +33,11 @@ var request = require("request"),
       method: 'GET',
       // default set 30 seconds
       timeout: 30000
-    }
+    },
     // ==================
     //  private method
     // ==================
-    testHttpUrl,
-
+    testHttpUrl;
 
 /**
  * Test url parttern by REGEXP.
@@ -124,16 +127,17 @@ exports.send = function (reqUrl, callback) {
 
   // Send request
   request(arg, function (error, res, body) {
+    // when error, fire on fail event
     if (error) {
-      this.fire('error', function (error) {
-
-      });
+      emitter.emit(EVENT_FAIL_NAME, error, res, body);
     }
+
     // TODO: need to warp it to easy use.
     callback(res, body);
   });
 };
 
-exports.fail = function (callback) {
+exports.error = function (callback) {
+  emitter.on(EVENT_FAIL_NAME, callback);
+};
 
-}
