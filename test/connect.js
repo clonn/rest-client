@@ -1,54 +1,61 @@
 // use rest client js.
 var rc = require('../index');
 
+// set error.
 rc.error(function (error) {
-  console.log(error);
+  console.log('fuck get error' + error);
   //console.log('pilibala');
 });
 
+// normal url
+rc.send(
+  'http://211.78.255.51'
+, function (res, body) {
+  console.log(body);
+});
+
+// set request env
 rc.set({
-  url: {
-    protocol: 'http',
-    host: 'tw.yahoo.com' + ':80',
-    hostname: 'tw.yahoo.com',
-    port: 80
-  },
-  method: 'DELETE',
-  timeout:0
+  url: 'http://211.78.255.51',
+})
+
+// send pathname
+rc.send(
+  '/post.php'
+, function (res, body) {
+  console.log(body);
 });
 
-/*
-// use GET method
-rc.send('url', function (error, ) {
-
-});
-
-// use POST method
+// send https
 rc.send({
-  uri: 'http://tw.yahoo.com',
-  qs: {
-    foo1: 'foo1',
-    foo2: 'foo2'
+  url: 'https://micloud.tw',
+}, function (res, body) {
+  console.log(res, body);
+});
+
+// send by params and POST
+rc.send({
+  url: 'http://211.78.255.51/post.php',
+  form: {
+    a:1,
+    b:2,
+    c:3
   },
   method: 'POST'
-}, function (response) {
-  // do sth
+}, function (res, body) {
+  console.log(body);
 });
 
-rc.set({
+// Send by URL object
+rc.send({
   url: {
     protocol: 'http',
-    host: 'url' + ':port',
-    hostname: 'url',
+    host: 'tw.yahoo.com',
+    hostname: 'tw.yahoo.com',
+    pathname: '/hello/test/0',
     port: 80
   },
-  method: 'POST',
-  timeout: 30000
+  method: 'POST'
+}, function (res) {
+  console.log(res);
 });
-
-var foo = 'I am foo';
-
-rc.fail(function (error) {
-    console.log(error + foo);
-})
-*/
