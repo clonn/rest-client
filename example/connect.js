@@ -4,7 +4,6 @@ var rc = require('../index');
 // set error.
 rc.error(function (error) {
   console.log('fuck get error' + error);
-  //console.log('pilibala');
 });
 
 // normal url
@@ -16,7 +15,7 @@ rc.send(
 
 // set request env
 rc.set({
-  url: 'http://211.78.255.51',
+  url: 'http://211.78.255.51'
 })
 
 // send pathname
