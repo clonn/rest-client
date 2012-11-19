@@ -78,8 +78,6 @@ sendRequest = function (requestObj, callback) {
   }
 };
 
-
-
 composeURL = function (userURL) {
   // set user url, and convert to domain name;
   // re-parse url object
@@ -153,6 +151,7 @@ exports.set = function (arg) {
 
   // set new attributes to env object
   env = _.extend(env, arg);
+  env.method = "GET";
 
   // Always set Timeout more than 0
   if (arg.timeout) {
@@ -176,18 +175,25 @@ exports.send = function (reqURL, callback) {
 
   // URL must be a object.
   if (_.isObject(reqURL)) {
+
+    // Set User HTTP Method, or use GET to default value.
+    reqURL.method = reqURL.method ? reqURL.method : 'GET';
     env = _.extend(env, reqURL);
+
   }
 
   if (typeof reqURL === "string") {
     env.url = reqURL;
+    env.method = 'GET';
   }
 
   // Check URL string, and suit on http portocal.
   composeURL(env.url);
 
-  return sendRequest(env, callback);
+  sendRequest(env, callback);
 
+  // return restClient module.
+  return exports;
 };
 
 /**
@@ -199,5 +205,8 @@ exports.send = function (reqURL, callback) {
  */
 exports.error = function (callback) {
   emitter.on(EVENT_FAIL_NAME, callback);
+
+  // return restClient module.
+  return exports;
 };
 
