@@ -1,6 +1,6 @@
 {
   "name": "restClient",
-  "version": "0.0.1",
+  "version": "0.1.2",
   "description": "A javascript library on Node.js, to connect other RESTful",
   "keywords": [
     "connect",
