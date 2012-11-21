@@ -1,5 +1,5 @@
 {
-  "name": "restclient",
+  "name": "rest-client",
   "version": "0.1.3",
   "description": "A javascript library on Node.js, to connect other RESTful",
   "keywords": [
@@ -30,7 +30,7 @@
       "url": "http://github.com/clonn/"
     }
   ],
-  "repositories": "https://github.com/clonn/restClient.git",
+  "repositories": "https://github.com/clonn/rest-client.git",
   "dependencies": {
     "request": ">0.0.1",
     "underscore": "1.3.3"
